@@ -32,17 +32,18 @@ class App < Sinatra::Application
     name = params['name']
     result = DB[<<-SQL, "#{name}@heroku.com"].all
 SELECT DISTINCT ON(type)
-   email, type, descr, floor, x, y, rssi,
-    date_part('minutes', now() - last_seen) AS min_ago, last_seen
-   FROM people
-   JOIN events ON people.mac = client_mac
-   JOIN aps  ON aps.mac = ap_mac
-  WHERE last_seen > (now() - '00:10:00'::interval)
-  AND email = ?
-  ORDER BY type, rssi/10 desc, last_seen;
+  email, type, descr, floor, x, y, rssi,
+  date_part('minutes', now() - last_seen) AS min_ago, last_seen
+FROM people
+LEFT OUTER JOIN events
+  ON people.mac = client_mac
+  AND last_seen > (now() - '00:10:00'::interval)
+LEFT OUTER JOIN aps
+  ON aps.mac = ap_mac
+WHERE email = ?
+ORDER BY type, rssi/10 DESC, last_seen;
 SQL
-  p result
-  JSON.dump(result)
+    JSON.dump(result)
   end
 
 
