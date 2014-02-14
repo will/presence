@@ -6,7 +6,7 @@ $stdout.sync = true
 
 
 # here is the database schema
-# create table events(id serial, client_mac macaddr, ap_mac macaddr, last_seen timestamptz, rssi int);
+# create table events(id serial, client_mac macaddr, ap_mac macaddr, last_seen timestamptz, rssi int, is_associated bool);
 
 DB = Sequel.connect(ENV.fetch 'DATABASE_URL')
 VALIDATOR = ENV.fetch 'VALIDATOR'
