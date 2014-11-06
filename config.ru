@@ -2,6 +2,7 @@ require 'sinatra'
 require 'pg'
 require 'sequel'
 require 'json'
+require 'multi_json'
 $stdout.sync = true
 
 
@@ -25,6 +26,13 @@ class App < Sinatra::Application
       @auth ||=  Rack::Auth::Basic::Request.new(request.env)
       @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials.last == API_PASS
     end
+
+    def data
+      MultiJson.decode(request.body.read).tap do
+        request.body.rewind
+      end
+    end
+
   end
 
   get '/where' do
@@ -52,7 +60,7 @@ SQL
   end
 
   post '/events' do
-    p request
+    p data
     map = JSON.parse(params[:data])
     if map['secret'] != SECRET
       logger.warn "got post with bad secret: #{SECRET}"
@@ -65,6 +73,9 @@ SQL
     end
   "ok"
   end
+
+
+
 
 end
 

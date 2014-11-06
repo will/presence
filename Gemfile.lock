@@ -3,6 +3,7 @@ GEM
   specs:
     daemons (1.1.9)
     eventmachine (1.0.3)
+    multi_json (1.10.1)
     pg (0.16.0)
     rack (1.5.2)
     rack-protection (1.5.0)
@@ -22,6 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  multi_json
   pg
   sequel
   sinatra
