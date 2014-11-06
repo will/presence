@@ -62,11 +62,11 @@ SQL
   post '/events' do
     data = parse_body
     if data['secret'] != SECRET
-      logger.warn "got post with bad secret: #{SECRET}"
+      logger.warn "got post with bad secret: #{data['secret'].inspect}"
       return
     end
 
-    map = data['body']
+    map = data['data']
     p [map['apMac'], map['apTags'], map['apFloors']]
     map['observations'].each do |cc|
       # map v2 stuff to the v1 format for now
