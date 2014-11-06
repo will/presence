@@ -27,7 +27,7 @@ class App < Sinatra::Application
       @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials.last == API_PASS
     end
 
-    def data
+    def parse_body
       MultiJson.decode(request.body.read).tap do
         request.body.rewind
       end
@@ -60,11 +60,13 @@ SQL
   end
 
   post '/events' do
-    map = data
-    if map['secret'] != SECRET
+    data = parse_body
+    if data['secret'] != SECRET
       logger.warn "got post with bad secret: #{SECRET}"
       return
     end
+
+    map = data['body']
     p [map['apMac'], map['apTags'], map['apFloors']]
     map['observations'].each do |cc|
       # map v2 stuff to the v1 format for now
