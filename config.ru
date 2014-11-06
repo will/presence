@@ -52,7 +52,7 @@ SQL
   end
 
   post '/events' do
-    p params
+    p request
     map = JSON.parse(params[:data])
     if map['secret'] != SECRET
       logger.warn "got post with bad secret: #{SECRET}"
