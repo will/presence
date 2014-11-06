@@ -60,15 +60,22 @@ SQL
   end
 
   post '/events' do
-    p data
-    map = JSON.parse(params[:data])
+    map = data
     if map['secret'] != SECRET
       logger.warn "got post with bad secret: #{SECRET}"
       return
     end
-    p map['probing']
-    map['probing'].each do |c|
-      p "client #{c['client_mac']} seen on ap #{c['ap_mac']} with rssi #{c['rssi']} at #{c['last_seen']}"
+    p [map['apMac'], map['apTags'], map['apFloors']]
+    map['observations'].each do |cc|
+      # map v2 stuff to the v1 format for now
+      c = {
+        'client_mac' => cc['clientMac'],
+        'ap_mac' => map['apMac'],
+        'rssi' => cc['rssi'],
+        'last_seen' => cc['seenTime']
+      }
+
+      p "client #{c['client_mac']} (#{cc['manufacturer'}) seen on ap #{c['ap_mac']} with rssi #{c['rssi']} at #{c['last_seen']}"
       DB[:events] << c
     end
   "ok"
