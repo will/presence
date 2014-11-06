@@ -75,7 +75,7 @@ SQL
         'last_seen' => cc['seenTime']
       }
 
-      p "client #{c['client_mac']} (#{cc['manufacturer'}) seen on ap #{c['ap_mac']} with rssi #{c['rssi']} at #{c['last_seen']}"
+      p "client #{c['client_mac']} (#{cc['manufacturer']}) seen on ap #{c['ap_mac']} with rssi #{c['rssi']} at #{c['last_seen']}"
       DB[:events] << c
     end
   "ok"
