@@ -8,6 +8,8 @@ $stdout.sync = true
 
 # here is the database schema
 # create table events(id serial, client_mac macaddr, ap_mac macaddr, last_seen timestamptz, rssi int, is_associated bool);
+#
+# https://docs.meraki.com/display/MR/Location+API
 
 DB = Sequel.connect(ENV.fetch 'DATABASE_URL')
 VALIDATOR = ENV.fetch 'VALIDATOR'
